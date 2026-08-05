@@ -33,3 +33,11 @@ A PyTorch project where I'm learning how Convolutional Neural Networks (CNNs) wo
 ---
 
 **Author:** Roshan V S
+
+## 📌 Learning Log
+
+Today's Progress:
+- Understood CNN architecture
+- Learned how Conv2D works
+- Studied feature extraction using convolution filters
+- Planned NeuroVision as an interactive AI learning platform
