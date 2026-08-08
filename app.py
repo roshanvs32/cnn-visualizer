@@ -15,22 +15,43 @@ from torchnn import ImageClassifier, get_device
 app = Flask(__name__)
 
 # ── Load model once at startup ───────────────────────────────────────────
+
 device = get_device()
 model = ImageClassifier().to(device)
 
 MODEL_PATH = "model_state.pt"
+
 try:
     with open(MODEL_PATH, "rb") as f:
-        model.load_state_dict(torch.load(f, map_location=device, weights_only=True))
+        model.load_state_dict(
+            torch.load(f, map_location=device, weights_only=True)
+        )
+
     model.eval()
-    print(f"[✓] Model loaded from {MODEL_PATH} on {device}")
+
+    # Store activations captured from CNN layers
+    activations = {}
+
+    def hook_fn(name):
+        def hook(module, input, output):
+            activations[name] = output.detach().cpu()
+        return hook
+
+    # Attach hooks to Conv2d and ReLU layers
+    for name, layer in model.model.named_modules():
+        if isinstance(layer, (torch.nn.Conv2d, torch.nn.ReLU)):
+            layer.register_forward_hook(hook_fn(name))
+
+    print(f"[ok] Model loaded from {MODEL_PATH} on {device}")
+
 except FileNotFoundError:
-    print(f"[✗] Model file not found: {MODEL_PATH}")
+    print(f"[ERROR] Model file not found: {MODEL_PATH}")
     print("    Run: python torchnn.py --epochs 10")
     exit(1)
 
 
 # ── Routes ───────────────────────────────────────────────────────────────
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -39,28 +60,30 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
     """Accept a base64-encoded image and return digit probabilities."""
+
     data = request.get_json()
+
     if not data or "image" not in data:
         return jsonify({"error": "No image provided"}), 400
 
     # Decode base64 image
-    image_data = data["image"].split(",")[1]  # strip "data:image/png;base64,"
+    image_data = data["image"].split(",")[1]
     image_bytes = base64.b64decode(image_data)
     img = Image.open(io.BytesIO(image_bytes))
 
-    # Preprocess: convert to grayscale, resize to 28x28, invert if needed
+    # Preprocess: convert to grayscale and resize to 28x28
     transform = Compose([
         Grayscale(num_output_channels=1),
         Resize((28, 28)),
         ToTensor(),
     ])
+
     img_tensor = transform(img).unsqueeze(0).to(device)
 
-    # The canvas draws white on black, which matches MNIST format.
-    # But if the background is transparent (from PNG), we need to handle it.
-    # Check if most pixels are near 0 (dark background) - MNIST style
-    mean_val = img_tensor.mean().item()
-    if mean_val < 0.1:
+    # Check if the canvas contains any significant pixel
+    max_val = img_tensor.max().item()
+
+    if max_val < 0.1:
         return jsonify({
             "prediction": -1,
             "confidence": 0.0,
@@ -68,11 +91,23 @@ def predict():
             "message": "Canvas appears empty"
         })
 
+    # Clear activations from the previous prediction
+    activations.clear()
+
+    # Run the CNN
     with torch.no_grad():
         logits = model(img_tensor)
-        probs = torch.softmax(logits, dim=1).squeeze().cpu().numpy()
-        pred = int(np.argmax(probs))
-        confidence = float(probs[pred])
+
+    # Print captured activations for debugging
+    print("\n--- ACTIVATIONS ---")
+
+    for name, activation in activations.items():
+        print(name, tuple(activation.shape))
+
+    # Convert model output into probabilities
+    probs = torch.softmax(logits, dim=1).squeeze().cpu().numpy()
+    pred = int(np.argmax(probs))
+    confidence = float(probs[pred])
 
     return jsonify({
         "prediction": pred,
@@ -81,6 +116,8 @@ def predict():
     })
 
 
+# ── Start Flask server ───────────────────────────────────────────────────
+
 if __name__ == "__main__":
-    print("\n  🌐 Open http://localhost:5000 in your browser\n")
+    print("\n   Open http://localhost:5000 in your browser\n")
     app.run(debug=True, host="0.0.0.0", port=5000)
