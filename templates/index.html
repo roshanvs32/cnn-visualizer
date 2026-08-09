@@ -91,12 +91,26 @@
                     <h3>Model Input (28×28)</h3>
                     <canvas id="preview-canvas" width="28" height="28"></canvas>
                 </div>
-                <!-- Conv1 Feature Maps -->
+              
+    <!-- Conv1 Learned Filters -->
+<div class="filter-section">
+    <h3>Conv1 Learned Filters</h3>
+    <p class="filter-description">
+        The 3×3 weights learned by the first convolution layer.
+    </p>
+
+    <div class="filter-grid" id="filter-grid">
+        <!-- JavaScript fills these -->
+    </div>
+</div>
+
+<!-- Conv1 Feature Maps -->
 <div class="feature-map-section">
     <h3>Conv1 Feature Maps</h3>
     <p class="feature-map-description">
         What the first convolution layer responds to.
     </p>
+
     <div class="feature-map-grid" id="feature-map-grid">
         <!-- JavaScript fills these -->
     </div>
