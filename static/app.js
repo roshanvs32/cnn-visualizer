@@ -22,6 +22,7 @@
     const statusBadge = document.getElementById("status-badge");
     const previewCanvas = document.getElementById("preview-canvas");
     const previewCtx    = previewCanvas.getContext("2d");
+    const featureMapGrid = document.getElementById("feature-map-grid");
 
     // ── State ───────────────────────────────────────────────
     let drawing = false;
@@ -204,7 +205,42 @@
             }, i * 40);
         }
     }
+function displayFeatureMaps(featureMaps) {
+    featureMapGrid.innerHTML = "";
 
+    featureMaps.forEach((map, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "feature-map";
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 26;
+        canvas.height = 26;
+
+        const ctx = canvas.getContext("2d");
+        const imageData = ctx.createImageData(26, 26);
+
+        for (let y = 0; y < 26; y++) {
+            for (let x = 0; x < 26; x++) {
+                const value = map[y][x];
+                const pixel = (y * 26 + x) * 4;
+
+                imageData.data[pixel] = value;
+                imageData.data[pixel + 1] = value;
+                imageData.data[pixel + 2] = value;
+                imageData.data[pixel + 3] = 255;
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        const label = document.createElement("span");
+        label.textContent = `Map ${index + 1}`;
+
+        wrapper.appendChild(canvas);
+        wrapper.appendChild(label);
+        featureMapGrid.appendChild(wrapper);
+    });
+}
     // ── Prediction ──────────────────────────────────────────
     async function predict() {
         if (!hasDrawn) {
@@ -254,6 +290,9 @@
 
             // Update bars
             updateProbBars(data.probabilities, data.prediction);
+            if (data.conv1_maps) {
+    displayFeatureMaps(data.conv1_maps);
+}
 
         } catch (err) {
             console.error("Prediction error:", err);
