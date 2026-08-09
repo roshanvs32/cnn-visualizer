@@ -49,6 +49,9 @@ except FileNotFoundError:
     print("    Run: python torchnn.py --epochs 10")
     exit(1)
 
+
+# ── Activation helper ────────────────────────────────────────────────────
+
 def activation_to_image(activation):
     """
     Convert a single activation map into a normalized
@@ -67,6 +70,8 @@ def activation_to_image(activation):
     activation = (activation * 255).byte()
 
     return activation.numpy()
+
+
 # ── Routes ───────────────────────────────────────────────────────────────
 
 @app.route("/")
@@ -121,6 +126,16 @@ def predict():
     for name, activation in activations.items():
         print(name, tuple(activation.shape))
 
+    # Convert Conv1 activation maps into image data
+    conv1_maps = []
+
+    if "0" in activations:
+        conv1_activation = activations["0"]
+
+        for feature_map in conv1_activation[0]:
+            image = activation_to_image(feature_map)
+            conv1_maps.append(image.tolist())
+
     # Convert model output into probabilities
     probs = torch.softmax(logits, dim=1).squeeze().cpu().numpy()
     pred = int(np.argmax(probs))
@@ -130,6 +145,7 @@ def predict():
         "prediction": pred,
         "confidence": confidence,
         "probabilities": [float(p) for p in probs],
+        "conv1_maps": conv1_maps,
     })
 
 
