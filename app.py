@@ -135,6 +135,7 @@ def predict():
         for feature_map in conv1_activation[0]:
             image = activation_to_image(feature_map)
             conv1_maps.append(image.tolist())
+            
 
     # Convert model output into probabilities
     probs = torch.softmax(logits, dim=1).squeeze().cpu().numpy()
@@ -146,7 +147,25 @@ def predict():
         "confidence": confidence,
         "probabilities": [float(p) for p in probs],
         "conv1_maps": conv1_maps,
+        "conv1 filters": conv1_filters,
     })
+    # Get learned Conv1 filters
+conv1_weights = model.model[0].weight.detach().cpu()
+
+conv1_filters = []
+
+for filter_weights in conv1_weights:
+    kernel = filter_weights[0]
+    kernel_min = kernel.min()
+    kernel_max = kernel.max()
+
+    if kernel_max > kernel_min:
+        kernel = (kernel - kernel_min) / (kernel_max - kernel_min)
+    else:
+        kernel = torch.zeros_like(kernel)
+
+    kernel = (kernel * 255).byte()
+    conv1_filters.append(kernel.numpy().tolist())
 
 
 # ── Start Flask server ───────────────────────────────────────────────────
