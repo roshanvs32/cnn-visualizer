@@ -12,7 +12,9 @@ from PIL import Image
 from torchvision.transforms import Compose, Grayscale, Resize, ToTensor
 from torchnn import ImageClassifier, get_device
 
+
 app = Flask(__name__)
+
 
 # ── Load model once at startup ───────────────────────────────────────────
 
@@ -35,6 +37,7 @@ try:
     def hook_fn(name):
         def hook(module, input, output):
             activations[name] = output.detach().cpu()
+
         return hook
 
     # Attach hooks to Conv2d and ReLU layers
@@ -57,6 +60,7 @@ def activation_to_image(activation):
     Convert a single activation map into a normalized
     0-255 grayscale image.
     """
+
     activation = activation.squeeze()
 
     min_val = activation.min()
@@ -126,7 +130,8 @@ def predict():
     for name, activation in activations.items():
         print(name, tuple(activation.shape))
 
-    # Convert Conv1 activation maps into image data
+    # ── Convert Conv1 activation maps into image data ────────────────
+
     conv1_maps = []
 
     if "0" in activations:
@@ -135,41 +140,55 @@ def predict():
         for feature_map in conv1_activation[0]:
             image = activation_to_image(feature_map)
             conv1_maps.append(image.tolist())
-            
 
-    # Convert model output into probabilities
+    # ── Get learned Conv1 filters ────────────────────────────────────
+
+    conv1_weights = model.model[0].weight.detach().cpu()
+
+    conv1_filters = []
+
+    for filter_weights in conv1_weights:
+        kernel = filter_weights[0]
+
+        kernel_min = kernel.min()
+        kernel_max = kernel.max()
+
+        if kernel_max > kernel_min:
+            kernel = (kernel - kernel_min) / (
+                kernel_max - kernel_min
+            )
+        else:
+            kernel = torch.zeros_like(kernel)
+
+        kernel = (kernel * 255).byte()
+
+        conv1_filters.append(kernel.numpy().tolist())
+
+    # ── Convert model output into probabilities ──────────────────────
+
     probs = torch.softmax(logits, dim=1).squeeze().cpu().numpy()
+
     pred = int(np.argmax(probs))
     confidence = float(probs[pred])
+
+    # ── Return prediction + visualizations ──────────────────────────
 
     return jsonify({
         "prediction": pred,
         "confidence": confidence,
         "probabilities": [float(p) for p in probs],
         "conv1_maps": conv1_maps,
-        "conv1 filters": conv1_filters,
+        "conv1_filters": conv1_filters,
     })
-    # Get learned Conv1 filters
-conv1_weights = model.model[0].weight.detach().cpu()
-
-conv1_filters = []
-
-for filter_weights in conv1_weights:
-    kernel = filter_weights[0]
-    kernel_min = kernel.min()
-    kernel_max = kernel.max()
-
-    if kernel_max > kernel_min:
-        kernel = (kernel - kernel_min) / (kernel_max - kernel_min)
-    else:
-        kernel = torch.zeros_like(kernel)
-
-    kernel = (kernel * 255).byte()
-    conv1_filters.append(kernel.numpy().tolist())
 
 
 # ── Start Flask server ───────────────────────────────────────────────────
 
 if __name__ == "__main__":
     print("\n   Open http://localhost:5000 in your browser\n")
-    app.run(debug=True, host="0.0.0.0", port=5000)
+
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=5000
+    )

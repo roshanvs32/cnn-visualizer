@@ -23,6 +23,7 @@
     const previewCanvas = document.getElementById("preview-canvas");
     const previewCtx    = previewCanvas.getContext("2d");
     const featureMapGrid = document.getElementById("feature-map-grid");
+    const filterGrid = document.getElementById("filter-grid");
 
     // ── State ───────────────────────────────────────────────
     let drawing = false;
@@ -205,6 +206,42 @@
             }, i * 40);
         }
     }
+function displayFilters(filters) {
+    filterGrid.innerHTML = "";
+
+    filters.forEach((filter, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "filter-item";
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 3;
+        canvas.height = 3;
+
+        const ctx = canvas.getContext("2d");
+        const imageData = ctx.createImageData(3, 3);
+
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                const value = filter[y][x];
+                const pixel = (y * 3 + x) * 4;
+
+                imageData.data[pixel] = value;
+                imageData.data[pixel + 1] = value;
+                imageData.data[pixel + 2] = value;
+                imageData.data[pixel + 3] = 255;
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        const label = document.createElement("span");
+        label.textContent = `Filter ${index + 1}`;
+
+        wrapper.appendChild(canvas);
+        wrapper.appendChild(label);
+        filterGrid.appendChild(wrapper);
+    });
+}    
 function displayFeatureMaps(featureMaps) {
     featureMapGrid.innerHTML = "";
 
@@ -239,6 +276,42 @@ function displayFeatureMaps(featureMaps) {
         wrapper.appendChild(canvas);
         wrapper.appendChild(label);
         featureMapGrid.appendChild(wrapper);
+    });
+}
+function displayFilters(filters) {
+    filterGrid.innerHTML = "";
+
+    filters.forEach((filter, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "filter-item";
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 3;
+        canvas.height = 3;
+
+        const ctx = canvas.getContext("2d");
+        const imageData = ctx.createImageData(3, 3);
+
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                const value = filter[y][x];
+                const pixel = (y * 3 + x) * 4;
+
+                imageData.data[pixel] = value;
+                imageData.data[pixel + 1] = value;
+                imageData.data[pixel + 2] = value;
+                imageData.data[pixel + 3] = 255;
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        const label = document.createElement("span");
+        label.textContent = `Filter ${index + 1}`;
+
+        wrapper.appendChild(canvas);
+        wrapper.appendChild(label);
+        filterGrid.appendChild(wrapper);
     });
 }
     // ── Prediction ──────────────────────────────────────────
@@ -289,8 +362,14 @@ function displayFeatureMaps(featureMaps) {
             statusBadge.classList.add("active");
 
             // Update bars
-            updateProbBars(data.probabilities, data.prediction);
-            if (data.conv1_maps) {
+updateProbBars(data.probabilities, data.prediction);
+console.log("FILTERS:", data.conv1_filters);
+
+if (data.conv1_filters) {
+    displayFilters(data.conv1_filters);
+}
+
+if (data.conv1_maps) {
     displayFeatureMaps(data.conv1_maps);
 }
 
