@@ -49,7 +49,24 @@ except FileNotFoundError:
     print("    Run: python torchnn.py --epochs 10")
     exit(1)
 
+def activation_to_image(activation):
+    """
+    Convert a single activation map into a normalized
+    0-255 grayscale image.
+    """
+    activation = activation.squeeze()
 
+    min_val = activation.min()
+    max_val = activation.max()
+
+    if max_val > min_val:
+        activation = (activation - min_val) / (max_val - min_val)
+    else:
+        activation = torch.zeros_like(activation)
+
+    activation = (activation * 255).byte()
+
+    return activation.numpy()
 # ── Routes ───────────────────────────────────────────────────────────────
 
 @app.route("/")
