@@ -55,9 +55,13 @@
         predHero.classList.remove("active");
         statusBadge.textContent = "Waiting";
         statusBadge.classList.remove("active");
-        resetProbBars();
-        previewCtx.fillStyle = "#000";
-        previewCtx.fillRect(0, 0, 28, 28);
+       resetProbBars();
+
+filterGrid.innerHTML = "";
+featureMapGrid.innerHTML = "";
+
+previewCtx.fillStyle = "#000";
+previewCtx.fillRect(0, 0, 28, 28);
     }
 
     function getCanvasPos(e) {
