@@ -216,32 +216,7 @@ function displayFeatureMaps(featureMaps) {
     featureMaps.forEach((map, index) => {
         const wrapper = document.createElement("div");
         wrapper.className = "feature-map";
-        wrapper.style.cursor = "pointer";
-        wrapper.onclick = function () {
-    
-};
 
-wrapper.addEventListener("click", () => {
-    const maps = document.querySelectorAll(".feature-map");
-
-    // Remove previous highlight
-    maps.forEach(map => {
-        map.style.outline = "none";
-        map.style.transform = "scale(1)";
-    });
-
-    // Highlight matching map
-    if (maps[index]) {
-        maps[index].style.outline = "3px solid #8b5cf6";
-        maps[index].style.borderRadius = "8px";
-        maps[index].style.transform = "scale(1.08)";
-
-        maps[index].scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-    }
-});
         
 
         const canvas = document.createElement("canvas");
@@ -282,7 +257,6 @@ function displayFilters(filters) {
         wrapper.style.cursor = "pointer";
 
 wrapper.onclick = function () {
-    console.log("FILTER CLICKED:", index + 1);
 
     const maps = document.querySelectorAll(".feature-map");
 
@@ -333,20 +307,6 @@ wrapper.onclick = function () {
         wrapper.appendChild(label);
         filterGrid.appendChild(wrapper);
     });
-}
-function highlightFeatureMap(index) {
-    const maps = document.querySelectorAll(".feature-map");
-
-    maps.forEach((map, mapIndex) => {
-        map.classList.toggle("selected", mapIndex === index);
-    });
-
-    if (maps[index]) {
-        maps[index].scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-    }
 }
     // ── Prediction ──────────────────────────────────────────
     async function predict() {
