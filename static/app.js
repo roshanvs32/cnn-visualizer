@@ -216,6 +216,10 @@ function displayFeatureMaps(featureMaps) {
     featureMaps.forEach((map, index) => {
         const wrapper = document.createElement("div");
         wrapper.className = "feature-map";
+        wrapper.title = `Show what Filter ${index + 1} detects`;
+wrapper.addEventListener("click", () => {
+    highlightFeatureMap(index);
+});
 
         const canvas = document.createElement("canvas");
         canvas.width = 26;
@@ -281,6 +285,20 @@ function displayFilters(filters) {
         wrapper.appendChild(label);
         filterGrid.appendChild(wrapper);
     });
+}
+function highlightFeatureMap(index) {
+    const maps = document.querySelectorAll(".feature-map");
+
+    maps.forEach((map, mapIndex) => {
+        map.classList.toggle("selected", mapIndex === index);
+    });
+
+    if (maps[index]) {
+        maps[index].scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+    }
 }
     // ── Prediction ──────────────────────────────────────────
     async function predict() {

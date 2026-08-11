@@ -660,3 +660,16 @@ main {
     font-size: 9px;
     color: #77758f;
 }
+.filter-item {
+    cursor: pointer;
+}
+
+.filter-item:hover {
+    transform: scale(1.08);
+}
+
+.feature-map.selected {
+    transform: scale(1.08);
+    outline: 2px solid #8b5cf6;
+    border-radius: 8px;
+}
