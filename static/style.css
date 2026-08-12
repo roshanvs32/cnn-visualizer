@@ -673,3 +673,9 @@ main {
     outline: 2px solid #8b5cf6;
     border-radius: 8px;
 }
+.filter-item.selected {
+    transform: scale(1.08);
+    outline: 2px solid #8b5cf6;
+    outline-offset: 4px;
+    border-radius: 8px;
+}

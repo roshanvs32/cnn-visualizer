@@ -257,6 +257,12 @@ function displayFilters(filters) {
         wrapper.style.cursor = "pointer";
 
 wrapper.onclick = function () {
+    document.querySelectorAll(".filter-item").forEach(filter => {
+        filter.classList.remove("selected");
+    });
+
+    wrapper.classList.add("selected");
+
     const maps = document.querySelectorAll(".feature-map");
 
     maps.forEach(map => {
