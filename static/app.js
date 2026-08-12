@@ -257,20 +257,16 @@ function displayFilters(filters) {
         wrapper.style.cursor = "pointer";
 
 wrapper.onclick = function () {
-
     const maps = document.querySelectorAll(".feature-map");
 
     maps.forEach(map => {
-        map.style.outline = "";
-        map.style.transform = "";
+        map.classList.remove("selected");
     });
 
     const selectedMap = maps[index];
 
     if (selectedMap) {
-        selectedMap.style.outline = "3px solid #8b5cf6";
-        selectedMap.style.outlineOffset = "4px";
-        selectedMap.style.transform = "scale(1.08)";
+        selectedMap.classList.add("selected");
 
         selectedMap.scrollIntoView({
             behavior: "smooth",
