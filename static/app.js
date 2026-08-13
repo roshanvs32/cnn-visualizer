@@ -58,6 +58,8 @@
         resetProbBars();
 
         filterGrid.innerHTML = "";
+        document.querySelectorAll(".filter-item.selected, .feature-map.selected")
+    .forEach(element => element.classList.remove("selected"));
         featureMapGrid.innerHTML = "";
 
         previewCtx.fillStyle = "#000";
