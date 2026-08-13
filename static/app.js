@@ -6,22 +6,22 @@
     "use strict";
 
     // ── DOM Elements ────────────────────────────────────────
-    const canvas      = document.getElementById("draw-canvas");
-    const ctx         = canvas.getContext("2d");
-    const wrapper     = document.getElementById("canvas-wrapper");
-    const hint        = document.getElementById("canvas-hint");
-    const btnClear    = document.getElementById("btn-clear");
-    const btnPredict  = document.getElementById("btn-predict");
-    const brushInput  = document.getElementById("brush-size");
-    const brushValue  = document.getElementById("brush-value");
-    const probGrid    = document.getElementById("prob-grid");
-    const predDigit   = document.getElementById("prediction-digit");
-    const confValue   = document.getElementById("confidence-value");
-    const confBar     = document.getElementById("confidence-bar");
-    const predHero    = document.getElementById("prediction-hero");
+    const canvas = document.getElementById("draw-canvas");
+    const ctx = canvas.getContext("2d");
+    const wrapper = document.getElementById("canvas-wrapper");
+    const hint = document.getElementById("canvas-hint");
+    const btnClear = document.getElementById("btn-clear");
+    const btnPredict = document.getElementById("btn-predict");
+    const brushInput = document.getElementById("brush-size");
+    const brushValue = document.getElementById("brush-value");
+    const probGrid = document.getElementById("prob-grid");
+    const predDigit = document.getElementById("prediction-digit");
+    const confValue = document.getElementById("confidence-value");
+    const confBar = document.getElementById("confidence-bar");
+    const predHero = document.getElementById("prediction-hero");
     const statusBadge = document.getElementById("status-badge");
     const previewCanvas = document.getElementById("preview-canvas");
-    const previewCtx    = previewCanvas.getContext("2d");
+    const previewCtx = previewCanvas.getContext("2d");
     const featureMapGrid = document.getElementById("feature-map-grid");
     const filterGrid = document.getElementById("filter-grid");
 
@@ -55,13 +55,13 @@
         predHero.classList.remove("active");
         statusBadge.textContent = "Waiting";
         statusBadge.classList.remove("active");
-       resetProbBars();
+        resetProbBars();
 
-filterGrid.innerHTML = "";
-featureMapGrid.innerHTML = "";
+        filterGrid.innerHTML = "";
+        featureMapGrid.innerHTML = "";
 
-previewCtx.fillStyle = "#000";
-previewCtx.fillRect(0, 0, 28, 28);
+        previewCtx.fillStyle = "#000";
+        previewCtx.fillRect(0, 0, 28, 28);
     }
 
     function getCanvasPos(e) {
@@ -209,107 +209,107 @@ previewCtx.fillRect(0, 0, 28, 28);
                 row.classList.toggle("highlight", i === predicted);
             }, i * 40);
         }
-    }   
-function displayFeatureMaps(featureMaps) {
-    featureMapGrid.innerHTML = "";
+    }
+    function displayFeatureMaps(featureMaps) {
+        featureMapGrid.innerHTML = "";
 
-    featureMaps.forEach((map, index) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "feature-map";
+        featureMaps.forEach((map, index) => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "feature-map";
 
-        
 
-        const canvas = document.createElement("canvas");
-        canvas.width = 26;
-        canvas.height = 26;
 
-        const ctx = canvas.getContext("2d");
-        const imageData = ctx.createImageData(26, 26);
+            const canvas = document.createElement("canvas");
+            canvas.width = 26;
+            canvas.height = 26;
 
-        for (let y = 0; y < 26; y++) {
-            for (let x = 0; x < 26; x++) {
-                const value = map[y][x];
-                const pixel = (y * 26 + x) * 4;
+            const ctx = canvas.getContext("2d");
+            const imageData = ctx.createImageData(26, 26);
 
-                imageData.data[pixel] = value;
-                imageData.data[pixel + 1] = value;
-                imageData.data[pixel + 2] = value;
-                imageData.data[pixel + 3] = 255;
+            for (let y = 0; y < 26; y++) {
+                for (let x = 0; x < 26; x++) {
+                    const value = map[y][x];
+                    const pixel = (y * 26 + x) * 4;
+
+                    imageData.data[pixel] = value;
+                    imageData.data[pixel + 1] = value;
+                    imageData.data[pixel + 2] = value;
+                    imageData.data[pixel + 3] = 255;
+                }
             }
-        }
 
-        ctx.putImageData(imageData, 0, 0);
+            ctx.putImageData(imageData, 0, 0);
 
-        const label = document.createElement("span");
-        label.textContent = `Map ${index + 1}`;
+            const label = document.createElement("span");
+            label.textContent = `Map ${index + 1}`;
 
-        wrapper.appendChild(canvas);
-        wrapper.appendChild(label);
-        featureMapGrid.appendChild(wrapper);
-    });
-}
-function displayFilters(filters) {
-    filterGrid.innerHTML = "";
-
-    filters.forEach((filter, index) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "filter-item";
-        wrapper.style.cursor = "pointer";
-
-wrapper.onclick = function () {
-    document.querySelectorAll(".filter-item").forEach(filter => {
-        filter.classList.remove("selected");
-    });
-
-    wrapper.classList.add("selected");
-
-    const maps = document.querySelectorAll(".feature-map");
-
-    maps.forEach(map => {
-        map.classList.remove("selected");
-    });
-
-    const selectedMap = maps[index];
-
-    if (selectedMap) {
-        selectedMap.classList.add("selected");
-
-        selectedMap.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
+            wrapper.appendChild(canvas);
+            wrapper.appendChild(label);
+            featureMapGrid.appendChild(wrapper);
         });
     }
-};
+    function displayFilters(filters) {
+        filterGrid.innerHTML = "";
 
-        const canvas = document.createElement("canvas");
-        canvas.width = 3;
-        canvas.height = 3;
+        filters.forEach((filter, index) => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "filter-item";
+            wrapper.style.cursor = "pointer";
 
-        const ctx = canvas.getContext("2d");
-        const imageData = ctx.createImageData(3, 3);
+            wrapper.onclick = function () {
+                document.querySelectorAll(".filter-item").forEach(filter => {
+                    filter.classList.remove("selected");
+                });
 
-        for (let y = 0; y < 3; y++) {
-            for (let x = 0; x < 3; x++) {
-                const value = filter[y][x];
-                const pixel = (y * 3 + x) * 4;
+                wrapper.classList.add("selected");
 
-                imageData.data[pixel] = value;
-                imageData.data[pixel + 1] = value;
-                imageData.data[pixel + 2] = value;
-                imageData.data[pixel + 3] = 255;
+                const maps = document.querySelectorAll(".feature-map");
+
+                maps.forEach(map => {
+                    map.classList.remove("selected");
+                });
+
+                const selectedMap = maps[index];
+
+                if (selectedMap) {
+                    selectedMap.classList.add("selected");
+
+                    selectedMap.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                }
+            };
+
+            const canvas = document.createElement("canvas");
+            canvas.width = 3;
+            canvas.height = 3;
+
+            const ctx = canvas.getContext("2d");
+            const imageData = ctx.createImageData(3, 3);
+
+            for (let y = 0; y < 3; y++) {
+                for (let x = 0; x < 3; x++) {
+                    const value = filter[y][x];
+                    const pixel = (y * 3 + x) * 4;
+
+                    imageData.data[pixel] = value;
+                    imageData.data[pixel + 1] = value;
+                    imageData.data[pixel + 2] = value;
+                    imageData.data[pixel + 3] = 255;
+                }
             }
-        }
 
-        ctx.putImageData(imageData, 0, 0);
+            ctx.putImageData(imageData, 0, 0);
 
-        const label = document.createElement("span");
-        label.textContent = `Filter ${index + 1}`;
+            const label = document.createElement("span");
+            label.textContent = `Filter ${index + 1}`;
 
-        wrapper.appendChild(canvas);
-        wrapper.appendChild(label);
-        filterGrid.appendChild(wrapper);
-    });
-}
+            wrapper.appendChild(canvas);
+            wrapper.appendChild(label);
+            filterGrid.appendChild(wrapper);
+        });
+    }
     // ── Prediction ──────────────────────────────────────────
     async function predict() {
         if (!hasDrawn) {
@@ -358,14 +358,14 @@ wrapper.onclick = function () {
             statusBadge.classList.add("active");
 
             // Update bars
-updateProbBars(data.probabilities, data.prediction);
-if (data.conv1_filters) {
-    displayFilters(data.conv1_filters);
-}
+            updateProbBars(data.probabilities, data.prediction);
+            if (data.conv1_filters) {
+                displayFilters(data.conv1_filters);
+            }
 
-if (data.conv1_maps) {
-    displayFeatureMaps(data.conv1_maps);
-}
+            if (data.conv1_maps) {
+                displayFeatureMaps(data.conv1_maps);
+            }
 
         } catch (err) {
             console.error("Prediction error:", err);
