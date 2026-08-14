@@ -49,6 +49,7 @@
         wrapper.classList.remove("drawing");
 
         // Reset results
+               // Reset results
         predDigit.textContent = "?";
         confValue.textContent = "—";
         confBar.style.width = "0%";
@@ -58,8 +59,10 @@
         resetProbBars();
 
         filterGrid.innerHTML = "";
+
         document.querySelectorAll(".filter-item.selected, .feature-map.selected")
-    .forEach(element => element.classList.remove("selected"));
+            .forEach(element => element.classList.remove("selected"));
+
         featureMapGrid.innerHTML = "";
 
         previewCtx.fillStyle = "#000";
