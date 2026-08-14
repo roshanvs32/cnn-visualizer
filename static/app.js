@@ -57,6 +57,9 @@
         statusBadge.textContent = "Waiting";
         statusBadge.classList.remove("active");
         resetProbBars();
+        brushSize = 18;
+brushInput.value = 18;
+brushValue.textContent = "18px";
 
         filterGrid.innerHTML = "";
 
