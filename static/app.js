@@ -320,6 +320,7 @@ brushValue.textContent = "18px";
     }
     // ── Prediction ──────────────────────────────────────────
     async function predict() {
+        if (btnPredict.classList.contains("loading")) return;
         if (!hasDrawn) {
             shakeElement(wrapper);
             return;
