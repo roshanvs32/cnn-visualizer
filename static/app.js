@@ -381,6 +381,9 @@ brushValue.textContent = "18px";
             predDigit.textContent = "!";
             confValue.textContent = "Error";
             statusBadge.textContent = "Error";
+            statusBadge.classList.remove("active");
+            predHero.classList.remove("active");
+    
         } finally {
             btnPredict.classList.remove("loading");
         }
