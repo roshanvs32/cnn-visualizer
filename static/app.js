@@ -49,7 +49,7 @@
         wrapper.classList.remove("drawing");
 
         // Reset results
-               // 
+        // 
         predDigit.textContent = "?";
         confValue.textContent = "—";
         confBar.style.width = "0%";
@@ -58,8 +58,8 @@
         statusBadge.classList.remove("active");
         resetProbBars();
         brushSize = 18;
-brushInput.value = 18;
-brushValue.textContent = "18px";
+        brushInput.value = 18;
+        brushValue.textContent = "18px";
 
         filterGrid.innerHTML = "";
 
@@ -383,7 +383,7 @@ brushValue.textContent = "18px";
             statusBadge.textContent = "Error";
             statusBadge.classList.remove("active");
             predHero.classList.remove("active");
-    
+
         } finally {
             btnPredict.classList.remove("loading");
         }
