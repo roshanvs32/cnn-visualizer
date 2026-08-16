@@ -37,9 +37,9 @@
     --radius-lg: 20px;
     --radius-xl: 28px;
 
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-    --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
-    --shadow-lg: 0 16px 64px rgba(0,0,0,0.5);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
     --shadow-glow: 0 0 40px var(--accent-glow);
 
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -105,10 +105,21 @@ body {
 }
 
 @keyframes blobFloat {
-    0%   { transform: translate(0, 0) scale(1); }
-    33%  { transform: translate(30px, -40px) scale(1.05); }
-    66%  { transform: translate(-20px, 20px) scale(0.95); }
-    100% { transform: translate(10px, -10px) scale(1.02); }
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -40px) scale(1.05);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.95);
+    }
+
+    100% {
+        transform: translate(10px, -10px) scale(1.02);
+    }
 }
 
 /* ── Layout ──────────────────────────────────────────────── */
@@ -151,8 +162,15 @@ main {
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 .header h1 {
@@ -270,9 +288,19 @@ main {
 }
 
 @keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
@@ -304,12 +332,12 @@ main {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(255,255,255,0);
+    background: rgba(255, 255, 255, 0);
     transition: background var(--transition-fast);
 }
 
 .btn:hover::after {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .btn:active {
@@ -359,7 +387,7 @@ main {
     appearance: none;
     height: 4px;
     border-radius: 2px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     outline: none;
 }
 
@@ -385,7 +413,7 @@ main {
     align-items: center;
     gap: 24px;
     padding: 20px;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
     margin-bottom: 24px;
@@ -415,8 +443,15 @@ main {
 }
 
 @keyframes popIn {
-    0%   { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .prediction-meta {
@@ -442,7 +477,7 @@ main {
 .confidence-bar-wrapper {
     height: 6px;
     border-radius: 3px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255, 255, 255, 0.06);
     overflow: hidden;
 }
 
@@ -495,7 +530,7 @@ main {
     flex: 1;
     height: 8px;
     border-radius: 4px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
     overflow: hidden;
 }
 
@@ -503,9 +538,9 @@ main {
     height: 100%;
     width: 0%;
     border-radius: 4px;
-    background: rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.12);
     transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-                background 0.3s ease;
+        background 0.3s ease;
 }
 
 .prob-row.highlight .prob-bar-fill {
@@ -571,17 +606,35 @@ main {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
-    main { padding: 20px 12px 32px; }
-    .header h1 { font-size: 1.5rem; }
-    .panel { padding: 18px; }
-    .prediction-hero { flex-direction: column; text-align: center; }
-    .prediction-digit { font-size: 3.5rem; }
+    main {
+        padding: 20px 12px 32px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .prediction-hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .prediction-digit {
+        font-size: 3.5rem;
+    }
 }
+
 /* ── CNN Feature Maps ───────────────────────────────────────── */
 
 .feature-map-section {
@@ -606,7 +659,7 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 5px;
-        transition: transform 0.2s ease, outline 0.2s ease;
+    transition: transform 0.2s ease, outline 0.2s ease;
 }
 
 .feature-map canvas {
@@ -622,6 +675,7 @@ main {
     font-size: 10px;
     color: #77758f;
 }
+
 /* ── Conv1 Learned Filters ───────────────────────────── */
 
 .filter-section {
@@ -646,7 +700,8 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 4px;
-        transition: transform 0.2s ease, outline 0.2s ease;
+    transition: transform 0.2s ease, outline 0.2s ease;
+    cursor: pointer;
 }
 
 .filter-item canvas {
@@ -662,9 +717,6 @@ main {
     font-size: 9px;
     color: #77758f;
 }
-.filter-item {
-    cursor: pointer;
-}
 
 .filter-item:hover {
     transform: scale(1.08);
@@ -675,6 +727,7 @@ main {
     outline: 2px solid #8b5cf6;
     border-radius: 8px;
 }
+
 .filter-item.selected {
     transform: scale(1.08);
     outline: 2px solid #8b5cf6;
