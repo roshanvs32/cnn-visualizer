@@ -224,9 +224,6 @@
         featureMaps.forEach((map, index) => {
             const wrapper = document.createElement("div");
             wrapper.className = "feature-map";
-
-
-
             const canvas = document.createElement("canvas");
             canvas.width = 26;
             canvas.height = 26;
