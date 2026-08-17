@@ -258,7 +258,6 @@
         filters.forEach((filter, index) => {
             const wrapper = document.createElement("div");
             wrapper.className = "filter-item";
-            wrapper.style.cursor = "pointer";
 
             wrapper.onclick = function () {
                 document.querySelectorAll(".filter-item").forEach(filter => {
