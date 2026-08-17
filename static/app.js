@@ -49,7 +49,6 @@
         wrapper.classList.remove("drawing");
 
         // Reset results
-        // 
         predDigit.textContent = "?";
         confValue.textContent = "—";
         confBar.style.width = "0%";
