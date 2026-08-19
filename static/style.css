@@ -734,3 +734,6 @@ main {
     outline-offset: 4px;
     border-radius: 8px;
 }
+.feature-map {
+    cursor: pointer;
+}

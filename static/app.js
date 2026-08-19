@@ -223,34 +223,33 @@
         featureMaps.forEach((map, index) => {
             const wrapper = document.createElement("div");
             wrapper.className = "feature-map";
-            wrapper.style.cursor = "pointer";
 
-wrapper.onclick = function () {
-    const filters = document.querySelectorAll(".filter-item");
+            wrapper.onclick = function () {
+                const filters = document.querySelectorAll(".filter-item");
 
-    filters.forEach(filter => {
-        filter.classList.remove("selected");
-    });
+                filters.forEach(filter => {
+                    filter.classList.remove("selected");
+                });
 
-    const maps = document.querySelectorAll(".feature-map");
+                const maps = document.querySelectorAll(".feature-map");
 
-    maps.forEach(map => {
-        map.classList.remove("selected");
-    });
+                maps.forEach(map => {
+                    map.classList.remove("selected");
+                });
 
-    wrapper.classList.add("selected");
+                wrapper.classList.add("selected");
 
-    const selectedFilter = filters[index];
+                const selectedFilter = filters[index];
 
-    if (selectedFilter) {
-        selectedFilter.classList.add("selected");
+                if (selectedFilter) {
+                    selectedFilter.classList.add("selected");
 
-        selectedFilter.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-    }
-};
+                    selectedFilter.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                }
+            };
             const canvas = document.createElement("canvas");
             canvas.width = 26;
             canvas.height = 26;
