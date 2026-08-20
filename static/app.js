@@ -224,6 +224,9 @@
             const wrapper = document.createElement("div");
             wrapper.className = "feature-map";
 
+            const height = map.length;
+            const width = map[0].length;
+
             wrapper.onclick = function () {
                 const filters = document.querySelectorAll(".filter-item");
 
@@ -251,16 +254,16 @@
                 }
             };
             const canvas = document.createElement("canvas");
-            canvas.width = 26;
-            canvas.height = 26;
+            canvas.width = width;
+            canvas.height = height;
 
             const ctx = canvas.getContext("2d");
-            const imageData = ctx.createImageData(26, 26);
+            const imageData = ctx.createImageData(width, height);
 
-            for (let y = 0; y < 26; y++) {
-                for (let x = 0; x < 26; x++) {
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
                     const value = map[y][x];
-                    const pixel = (y * 26 + x) * 4;
+                    const pixel = (y * width + x) * 4;
 
                     imageData.data[pixel] = value;
                     imageData.data[pixel + 1] = value;
@@ -396,6 +399,9 @@
 
             if (data.conv1_maps) {
                 displayFeatureMaps(data.conv1_maps);
+            }
+            if (data.conv2_maps) {
+                displayFeatureMaps(data.conv2_maps);
             }
 
         } catch (err) {
