@@ -141,6 +141,17 @@ def predict():
             image = activation_to_image(feature_map)
             conv1_maps.append(image.tolist())
 
+    # ── Convert Conv2 activation maps into image data ────────────────
+
+    conv2_maps = []
+
+    if "2" in activations:
+        conv2_activation = activations["2"]
+
+        for feature_map in conv2_activation[0]:
+            image = activation_to_image(feature_map)
+            conv2_maps.append(image.tolist())
+
     # ── Get learned Conv1 filters ────────────────────────────────────
 
     conv1_weights = model.model[0].weight.detach().cpu()
@@ -179,6 +190,7 @@ def predict():
         "probabilities": [float(p) for p in probs],
         "conv1_maps": conv1_maps,
         "conv1_filters": conv1_filters,
+        "conv2_maps": conv2_maps,
     })
 
 
