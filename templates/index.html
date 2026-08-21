@@ -1,128 +1,169 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MNIST Digit Classifier — AI Powered</title>
-    <meta name="description" content="Draw a digit and let a PyTorch CNN classify it in real-time. Interactive MNIST digit recognition powered by deep learning.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+    <meta
+      name="description"
+      content="Draw a digit and let a PyTorch CNN classify it in real-time. Interactive MNIST digit recognition powered by deep learning."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
     <!-- Animated background blobs -->
     <div class="bg-blob blob-1"></div>
     <div class="bg-blob blob-2"></div>
     <div class="bg-blob blob-3"></div>
 
     <main>
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <span class="logo-icon">🧠</span>
-                <div>
-                    <h1>Digit Classifier</h1>
-                    <p class="subtitle">PyTorch CNN · MNIST · Real-time Inference</p>
-                </div>
-            </div>
-        </header>
-
-        <div class="app-grid">
-            <!-- Left: Canvas Panel -->
-            <section class="panel canvas-panel" id="canvas-panel">
-                <div class="panel-header">
-                    <h2>Draw a Digit</h2>
-                    <span class="badge">0 – 9</span>
-                </div>
-                <div class="canvas-wrapper" id="canvas-wrapper">
-                    <canvas id="draw-canvas" width="280" height="280"></canvas>
-                    <div class="canvas-hint" id="canvas-hint">
-                        <span class="hint-icon">✏️</span>
-                        <span>Draw here</span>
-                    </div>
-                </div>
-                <div class="canvas-controls">
-                    <button class="btn btn-secondary" id="btn-clear" title="Clear canvas">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                        Clear
-                    </button>
-                    <button class="btn btn-primary" id="btn-predict" title="Classify digit">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                        Predict
-                    </button>
-                </div>
-                <div class="brush-controls">
-                    <label for="brush-size">Brush</label>
-                    <input type="range" id="brush-size" min="8" max="32" value="18">
-                    <span class="brush-value" id="brush-value">18px</span>
-                </div>
-            </section>
-
-            <!-- Right: Results Panel -->
-            <section class="panel results-panel" id="results-panel">
-                <div class="panel-header">
-                    <h2>Prediction</h2>
-                    <span class="badge" id="status-badge">Waiting</span>
-                </div>
-
-                <!-- Big prediction display -->
-                <div class="prediction-hero" id="prediction-hero">
-                    <div class="prediction-digit" id="prediction-digit">?</div>
-                    <div class="prediction-meta">
-                        <div class="confidence-label">Confidence</div>
-                        <div class="confidence-value" id="confidence-value">—</div>
-                        <div class="confidence-bar-wrapper">
-                            <div class="confidence-bar" id="confidence-bar"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Probability distribution -->
-                <div class="prob-section">
-                    <h3>Probability Distribution</h3>
-                    <div class="prob-grid" id="prob-grid">
-                        <!-- JS fills these -->
-                    </div>
-                </div>
-
-                <!-- Preprocessed image preview -->
-                <div class="preview-section">
-                    <h3>Model Input (28×28)</h3>
-                    <canvas id="preview-canvas" width="28" height="28"></canvas>
-                </div>
-              
-    <!-- Conv1 Learned Filters -->
-<div class="filter-section">
-    <h3>Conv1 Learned Filters</h3>
-    <p class="filter-description">
-        The 3×3 kernels learned by the first convolution layer
-    </p>
-
-    <div class="filter-grid" id="filter-grid">
-        <!-- JavaScript fills these -->
-    </div>
-</div>
-
-<!-- Conv1 Feature Maps -->
-<div class="feature-map-section">
-    <h3>Conv1 Feature Maps</h3>
-    <p class="feature-map-description">
-        The activation produced by each learned Conv1 filter
-    </p>
-
-    <div class="feature-map-grid" id="feature-map-grid">
-        <!-- JavaScript fills these -->
-    </div>
-</div>
-            </section>
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <span class="logo-icon">🧠</span>
+          <div>
+            <h1>Digit Classifier</h1>
+            <p class="subtitle">PyTorch CNN · MNIST · Real-time Inference</p>
+          </div>
         </div>
+      </header>
 
-        <footer class="footer">
-            <p>Built with <strong>PyTorch</strong> · 3-layer CNN · trained on 60,000 MNIST digits</p>
-        </footer>
+      <div class="app-grid">
+        <!-- Left: Canvas Panel -->
+        <section class="panel canvas-panel" id="canvas-panel">
+          <div class="panel-header">
+            <h2>Draw a Digit</h2>
+            <span class="badge">0 – 9</span>
+          </div>
+          <div class="canvas-wrapper" id="canvas-wrapper">
+            <canvas id="draw-canvas" width="280" height="280"></canvas>
+            <div class="canvas-hint" id="canvas-hint">
+              <span class="hint-icon">✏️</span>
+              <span>Draw here</span>
+            </div>
+          </div>
+          <div class="canvas-controls">
+            <button
+              class="btn btn-secondary"
+              id="btn-clear"
+              title="Clear canvas"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
+              Clear
+            </button>
+            <button
+              class="btn btn-primary"
+              id="btn-predict"
+              title="Classify digit"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              Predict
+            </button>
+          </div>
+          <div class="brush-controls">
+            <label for="brush-size">Brush</label>
+            <input type="range" id="brush-size" min="8" max="32" value="18" />
+            <span class="brush-value" id="brush-value">18px</span>
+          </div>
+        </section>
+
+        <!-- Right: Results Panel -->
+        <section class="panel results-panel" id="results-panel">
+          <div class="panel-header">
+            <h2>Prediction</h2>
+            <span class="badge" id="status-badge">Waiting</span>
+          </div>
+
+          <!-- Big prediction display -->
+          <div class="prediction-hero" id="prediction-hero">
+            <div class="prediction-digit" id="prediction-digit">?</div>
+            <div class="prediction-meta">
+              <div class="confidence-label">Confidence</div>
+              <div class="confidence-value" id="confidence-value">—</div>
+              <div class="confidence-bar-wrapper">
+                <div class="confidence-bar" id="confidence-bar"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Probability distribution -->
+          <div class="prob-section">
+            <h3>Probability Distribution</h3>
+            <div class="prob-grid" id="prob-grid">
+              <!-- JS fills these -->
+            </div>
+          </div>
+
+          <!-- Preprocessed image preview -->
+          <div class="preview-section">
+            <h3>Model Input (28×28)</h3>
+            <canvas id="preview-canvas" width="28" height="28"></canvas>
+          </div>
+
+          <!-- Conv1 Learned Filters -->
+          <div class="filter-section">
+            <h3>Conv1 Learned Filters</h3>
+            <p class="filter-description">
+              The 3×3 kernels learned by the first convolution layer
+            </p>
+
+            <div class="filter-grid" id="filter-grid">
+              <!-- JavaScript fills these -->
+            </div>
+          </div>
+
+          <!-- Conv1 Feature Maps -->
+          <div class="feature-map-section">
+            <h3>Conv1 Feature Maps</h3>
+            <p class="feature-map-description">
+              The activation produced by each learned Conv1 filter
+            </p>
+
+            <div class="feature-map-grid" id="feature-map-grid">
+              <!-- JavaScript fills these -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <p>
+          Built with <strong>PyTorch</strong> · 3-layer CNN · trained on 60,000
+          MNIST digits
+        </p>
+      </footer>
     </main>
 
     <script src="/static/app.js"></script>
-</body>
+  </body>
 </html>
