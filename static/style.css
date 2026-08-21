@@ -660,6 +660,7 @@ main {
     align-items: center;
     gap: 5px;
     transition: transform 0.2s ease, outline 0.2s ease;
+    cursor: pointer;
 }
 
 .feature-map canvas {
@@ -733,7 +734,4 @@ main {
     outline: 2px solid #8b5cf6;
     outline-offset: 4px;
     border-radius: 8px;
-}
-.feature-map {
-    cursor: pointer;
 }
