@@ -191,7 +191,7 @@ main {
     margin-top: 2px;
 }
 
-/* ── Panels (Glass Cards) ────────────────────────────────── */
+/* ── Panels ────────────────────────────────── */
 .panel {
     background: var(--bg-card);
     backdrop-filter: blur(24px);
@@ -303,7 +303,7 @@ main {
     }
 }
 
-/* ── Buttons ─────────────────────────────────────────────── */
+/* ── Buttons  ─────────────────────────────────────────────── */
 .canvas-controls {
     display: flex;
     gap: 10px;
@@ -407,7 +407,7 @@ main {
     text-align: right;
 }
 
-/* ── Prediction Hero ─────────────────────────────────────── */
+/* ── Prediction and interference ─────────────────────────────────────── */
 .prediction-hero {
     display: flex;
     align-items: center;
